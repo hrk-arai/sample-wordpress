@@ -6,8 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
-include_recipe sample-wordpress::apache
-include_recipe sample-wordpress::php
-include_recipe sample-wordpress::mysql
-include_recipe sample-wordpress::wordpress
+include_recipe 'sample-wordpress::php'
+include_recipe 'sample-wordpress::httpd'
+include_recipe 'sample-wordpress::mysql'
+include_recipe 'sample-wordpress::wordpress'

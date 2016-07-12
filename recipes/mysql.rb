@@ -10,7 +10,7 @@ service "mysqld" do
 end
 
 # my.cnfファイルの設置
-emplate "/etc/my.cnf" do
+template "/etc/my.cnf" do
   source "my.cnf.erb"
   action :create
 end

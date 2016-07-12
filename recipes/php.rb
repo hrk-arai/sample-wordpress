@@ -1,4 +1,4 @@
-#package install
+# パッケージインストール
 %w{php php-mysql}.each do |package|
   package "#{package}" do
     action :install

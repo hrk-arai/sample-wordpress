@@ -1,12 +1,4 @@
-require 'openssl'
-def secure_password(length = 20)
-  pw = String.new
-  while pw.length < length
-    pw << ::OpenSSL::Random.random_bytes(1).gsub(/\W/, '')
-  end
-  pw
-end
-
+# wordpressのパッケージダウンロード
 remote_file "/tmp/wordpress-4.2.2-ja.tar.gz" do
   source "https://ja.wordpress.org/wordpress-4.2.2-ja.tar.gz"
   owner 'root'
@@ -14,7 +6,7 @@ remote_file "/tmp/wordpress-4.2.2-ja.tar.gz" do
   mode '0644'
 end
 
-#make wordpress dir
+# wordpress用のドキュメントディレクトリを作成
 directory "/var/www/html/wordpress" do
   owner 'root'
   group 'root'
@@ -22,7 +14,7 @@ directory "/var/www/html/wordpress" do
   action :create
 end
 
-#deploy package
+# パッケージの展開
 bash 'deploy_package' do
   cwd "/tmp"
   code <<-EOH
@@ -32,23 +24,23 @@ bash 'deploy_package' do
   not_if { ::File.exists?("/var/www/html/wordpress/index.php") }
 end
 
-#make wp-config.php
-template "/var/www/html/wordpress/wp-config.php" do
-  source "wp-config.php.erb"
+# wp-config.phpを配置
+cookbook_file "/var/www/html/wordpress/wp-config.php" do
+  source "wp-config.php"
   owner "root"
   group "root"
   action :create
 end
 
-#set mysql query
+# DB作成
 execute "create-db" do
   command "mysql < /tmp/create-wordpress.sql"
   action :nothing
 end
 
-#make create-wordpress.sql
-template "/tmp/create-wordpress.sql" do
-  source "create-wordpress.sql.erb"
+# DB作成用のスクリプトファイルを配置
+cookbook_file "/tmp/create-wordpress.sql" do
+  source "create-wordpress.sql"
   owner "root"
   group "root"
   action :create
