@@ -15,5 +15,10 @@ template "/etc/httpd/conf/httpd.conf" do
   group "root"
   mode 0644
   action :create
-  notifies :reload, "service[httpd]", :delayed
+  notifies :reload, "execute[delay and restart httpd]", :delayed
+end
+
+execute "sleep and restart httpd" do
+  command "sleep 30"
+  notifies :reload, "service[httpd]", :immediately
 end
