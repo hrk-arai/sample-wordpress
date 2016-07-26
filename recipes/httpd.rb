@@ -15,5 +15,5 @@ template "/etc/httpd/conf/httpd.conf" do
   group "root"
   mode 0644
   action :create
-  notifies :reload, "service[httpd]"
+  notifies :reload, "service[httpd]", :delayed
 end
